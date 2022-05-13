@@ -29,13 +29,14 @@ class Connector
      *
      * @param Powerdns|null     $client             The client instance.
      * @param HandlerStack|null $guzzleHandlerStack Optional Guzzle handlers.
+     * @param callable|null     $onStats            Optional Guzzle OnStats handler.
      */
-    public function __construct(Powerdns $client, ?HandlerStack $guzzleHandlerStack = null)
+    public function __construct(Powerdns $client, ?HandlerStack $guzzleHandlerStack = null, ?callable $onStats = null)
     {
         $this->powerdns = $client;
 
         // Don't let Guzzle throw exceptions, as it is handled by this class.
-        $this->httpClient = new GuzzleClient(['exceptions' => false, 'handler' => $guzzleHandlerStack]);
+        $this->httpClient = new GuzzleClient(['exceptions' => false, 'handler' => $guzzleHandlerStack, 'on_stats' => $onStats]);
     }
 
     /**

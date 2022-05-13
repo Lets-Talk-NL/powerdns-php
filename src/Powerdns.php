@@ -60,13 +60,15 @@ class Powerdns
      * @param int|null       $port      (optional) The PowerDNS API Port.
      * @param null|string    $server    (optional) The PowerDNS server to use.
      * @param Connector|null $connector (optional) The Connector to make calls.
+     * @param callable|null  $onStats   (optional) The Guzzle OnStats processor.
      */
     public function __construct(
         ?string $host = null,
         ?string $apiKey = null,
         ?int $port = null,
         ?string $server = null,
-        ?Connector $connector = null
+        ?Connector $connector = null,
+        ?callable $onStats = null
     ) {
         if (self::$_instance === null) {
             self::$_instance = $this;
@@ -88,7 +90,7 @@ class Powerdns
             $this->server = $server;
         }
 
-        $this->connector = $connector ?? new Connector($this);
+        $this->connector = $connector ?? new Connector($this, null, $onStats);
     }
 
     /**
